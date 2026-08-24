@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Friends</title>
+</head>
+<body>
+<h2>Friends of <span th:text="${user.name}"></span></h2>
+<a th:href="@{/users/{userId}/friends/new(userId=${user.id})}">Add Friend</a> |
+<a th:href="@{/users}">Back to Users</a>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th><th>Name</th><th>Email</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="friend : ${friends}">
+            <td th:text="${friend.id}"></td>
+            <td th:text="${friend.name}"></td>
+            <td th:text="${friend.email}"></td>
+            <td>
+                <a th:href="@{/users/{userId}/friends/{id}/edit(userId=${user.id}, id=${friend.id})}">Edit</a> |
+                <a th:href="@{/users/{userId}/friends/{id}/delete(userId=${user.id}, id=${friend.id})}"
+                   onclick="return confirm('Delete this friend?')">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body>
+</html>
