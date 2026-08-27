@@ -8,4 +8,5 @@ public interface FriendService {
     Friend findById(Long id);
     Friend save(Friend friend);
     void deleteById(Long id);
+    List<Friend> getAllFriends();
 }

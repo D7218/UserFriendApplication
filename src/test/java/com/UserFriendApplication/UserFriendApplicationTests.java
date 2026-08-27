@@ -8,6 +8,7 @@ class UserFriendApplicationTests {
 
 	@Test
 	void contextLoads() {
+
 	}
 
 }
