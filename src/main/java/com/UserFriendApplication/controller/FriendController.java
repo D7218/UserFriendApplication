@@ -2,53 +2,48 @@ package com.UserFriendApplication.controller;
 
 import com.UserFriendApplication.entity.Friend;
 import com.UserFriendApplication.service.FriendService;
-import com.UserFriendApplication.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/users/{userId}/friends")
+@RequestMapping("/friends")
 @RequiredArgsConstructor
 public class FriendController {
 
     private final FriendService friendService;
-    private final UserService userService;
+
 
     @GetMapping
-    public String list(@PathVariable Long userId, Model model) {
-        model.addAttribute("user", userService.findById(userId));
-        model.addAttribute("friends", friendService.findByUserId(userId));
-        return "friend/list";
-    }
+    public String getAllFriends(Model model) {
 
-    @GetMapping("/new")
-    public String createForm(@PathVariable Long userId, Model model) {
-        Friend friend = new Friend();
-        friend.setUser(userService.findById(userId));
-        model.addAttribute("friend", friend);
+        List<Friend> friends = friendService.getAllFriends();
+
+        model.addAttribute("friends", friends);
+
+        return"friend/friends";
+    }
+    @GetMapping("/user/{userId}")
+    public String getFriendsByUserId(
+            @PathVariable Long userId,
+            Model model) {
+
+        List<Friend> friends =
+                friendService.findByUserId(userId);
+
+        model.addAttribute("friends", friends);
         model.addAttribute("userId", userId);
-        return "friend/form";
+        return "friend/friends";
     }
 
-    @GetMapping("/{id}/edit")
-    public String editForm(@PathVariable Long userId, @PathVariable Long id, Model model) {
-        model.addAttribute("friend", friendService.findById(id));
-        model.addAttribute("userId", userId);
-        return "friend/form";
-    }
 
-    @PostMapping("/save")
-    public String save(@PathVariable Long userId, @ModelAttribute Friend friend) {
-        friend.setUser(userService.findById(userId));
-        friendService.save(friend);
-        return "redirect:/users/" + userId + "/friends";
-    }
 
-    @GetMapping("/{id}/delete")
-    public String delete(@PathVariable Long userId, @PathVariable Long id) {
+    @PostMapping("/delete/{id}")
+    public String deleteFriend(@PathVariable Long id) {
         friendService.deleteById(id);
-        return "redirect:/users/" + userId + "/friends";
+        return "redirect:/friends";
     }
 }
