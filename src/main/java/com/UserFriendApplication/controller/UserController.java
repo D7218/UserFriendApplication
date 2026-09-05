@@ -51,6 +51,7 @@ public class UserController {
     @PostMapping("/save")
     public String save(@ModelAttribute User user) {
         userService.save(user);
+        System.out.println("edit controller");
         return "userUi";
     }
 
