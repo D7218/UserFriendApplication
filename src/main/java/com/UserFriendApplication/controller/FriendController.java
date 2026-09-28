@@ -23,7 +23,7 @@ public class FriendController {
         List<Friend> friends = friendService.getAllFriends();
 
         model.addAttribute("friends", friends);
-
+        System.out.println(" hi");
         return"friend/friends";
     }
     @GetMapping("/user/{userId}")
